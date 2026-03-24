@@ -186,10 +186,15 @@
                                     <button type="button"
                                         title="Toggle all {{ $module }} permissions"
                                         @click="allChecked = !allChecked; $el.closest('[x-data]').querySelectorAll('input[data-module]').forEach(cb => cb.checked = allChecked)"
-                                        class="relative w-8 h-4 rounded-full cursor-pointer transition-colors duration-200 outline-none shrink-0"
-                                        :class="allChecked ? 'bg-sea-green' : 'bg-slate-200'">
-                                        <span class="absolute top-[2px] left-[2px] w-3 h-3 bg-white rounded-full shadow-sm transition-transform duration-200"
-                                              :class="allChecked ? 'translate-x-4' : 'translate-x-0'"></span>
+                                        class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-semibold tracking-wide border transition-all duration-150 cursor-pointer select-none"
+                                        :class="allChecked
+                                            ? 'bg-sea-green/10 border-sea-green/30 text-sea-green'
+                                            : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300 hover:text-slate-600'">
+                                        <svg class="w-3 h-3 transition-opacity" :class="allChecked ? 'opacity-100' : 'opacity-40'"
+                                             fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span x-text="allChecked ? 'All on' : 'All off'"></span>
                                     </button>
                                 </div>
 
@@ -427,20 +432,21 @@
 
                                         {{-- Access level selector --}}
                                         <div class="flex flex-col gap-1.5">
-                                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Access Level</span>
-                                            <div class="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl p-1">
+                                            <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Access Level</span>
+                                            <div class="flex items-center rounded-lg border border-slate-200 overflow-hidden divide-x divide-slate-200 bg-white">
                                                 @foreach([
-                                                    'read_only' => ['label' => '👁 Read Only', 'on' => 'bg-blue-600 text-white shadow-sm', 'off' => 'text-blue-600 hover:bg-blue-50'],
-                                                    'write'     => ['label' => '✏️ Write',     'on' => 'bg-amber-500 text-white shadow-sm', 'off' => 'text-amber-600 hover:bg-amber-50'],
-                                                    'full'      => ['label' => '⚡ Full',      'on' => 'bg-emerald-600 text-white shadow-sm', 'off' => 'text-emerald-700 hover:bg-emerald-50'],
-                                                ] as $level => $lvlInfo)
-                                                    <label class="cursor-pointer">
+                                                    'read_only' => 'Read Only',
+                                                    'write'     => 'Write',
+                                                    'full'      => 'Full',
+                                                ] as $level => $levelLabel)
+                                                    <label class="cursor-pointer flex-1">
                                                         <input type="radio" name="access_level" value="{{ $level }}"
                                                                {{ $currentAccess === $level ? 'checked' : '' }}
                                                                class="sr-only peer">
-                                                        <span class="block text-xs font-bold px-3 py-1.5 rounded-lg transition-all
-                                                                     peer-checked:{{ $lvlInfo['on'] }} {{ $lvlInfo['off'] }}">
-                                                            {{ $lvlInfo['label'] }}
+                                                        <span class="block text-center text-xs font-medium px-3 py-2 transition-colors duration-150
+                                                                     text-slate-500 hover:bg-slate-50
+                                                                     peer-checked:bg-deep-forest peer-checked:text-white peer-checked:font-semibold">
+                                                            {{ $levelLabel }}
                                                         </span>
                                                     </label>
                                                 @endforeach
