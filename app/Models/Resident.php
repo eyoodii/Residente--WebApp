@@ -11,6 +11,7 @@ use Schoolees\Psgc\Models\Region;
 use Schoolees\Psgc\Models\Province;
 use Schoolees\Psgc\Models\City;
 use Schoolees\Psgc\Models\Barangay;
+use App\Models\DepartmentRoleModule;
 
 class Resident extends Authenticatable implements MustVerifyEmail
 {
@@ -411,6 +412,7 @@ class Resident extends Authenticatable implements MustVerifyEmail
 
     /**
      * Check if resident has access to a specific module based on their department role.
+     * Checks the database first (UI-configurable); falls back to config if no DB rows exist.
      * Super Admin bypasses all checks.
      */
     public function hasDepartmentAccess(string $module): bool
@@ -423,13 +425,18 @@ class Resident extends Authenticatable implements MustVerifyEmail
             return false;
         }
 
-        $config = config('department_permissions.' . $this->department_role);
+        // If DB has entries for this role, use them (overrides config)
+        $dbModules = DepartmentRoleModule::where('department_role', $this->department_role)
+            ->pluck('module');
 
-        if (!$config) {
-            return false;
+        if ($dbModules->isNotEmpty()) {
+            return $dbModules->contains($module);
         }
 
-        return in_array($module, $config['modules'] ?? []);
+        // Fallback: config-based access
+        $config = config('department_permissions.' . $this->department_role);
+
+        return $config && in_array($module, $config['modules'] ?? []);
     }
 
     /**
@@ -466,9 +473,17 @@ class Resident extends Authenticatable implements MustVerifyEmail
 
     /**
      * Check if this department role is restricted to read-only access.
+     * Checks DB access_level first; falls back to config.
      */
     public function isDepartmentReadOnly(): bool
     {
+        if ($this->department_role) {
+            $dbRow = DepartmentRoleModule::where('department_role', $this->department_role)->first();
+            if ($dbRow) {
+                return $dbRow->access_level === 'read_only';
+            }
+        }
+
         $config = $this->getDepartmentConfig();
         return ($config['access'] ?? 'read_only') === 'read_only';
     }

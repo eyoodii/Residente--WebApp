@@ -380,8 +380,12 @@ Route::middleware(['auth', 'verified', 'lockout', 'onboarding.complete'])->group
 
         // Role Permissions Management (SA only)
         Route::middleware('role:SA')->prefix('permissions')->name('permissions.')->group(function () {
-            Route::get('/', [RolePermissionController::class, 'index'])->name('index');
-            Route::put('/{role}', [RolePermissionController::class, 'update'])->name('update');
+            Route::get('/',  [RolePermissionController::class, 'index'])->name('index');
+            Route::post('/', [RolePermissionController::class, 'store'])->name('store');
+            Route::put('/department/{departmentRole}', [RolePermissionController::class, 'updateDepartment'])->name('department.update');
+            Route::put('/{role}',        [RolePermissionController::class, 'update'])->name('update');
+            Route::patch('/{role}/meta', [RolePermissionController::class, 'updateMeta'])->name('updateMeta');
+            Route::delete('/{role}',     [RolePermissionController::class, 'destroy'])->name('destroy');
         });
     });
 });
