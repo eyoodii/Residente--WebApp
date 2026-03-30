@@ -4,30 +4,25 @@
 @section('subtitle', 'Manage feature access for system roles and department offices')
 
 @section('content')
-<div class="p-8" x-data="permissionsManager()">
-
-    {{-- Page header --}}
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h2 class="text-2xl font-bold text-deep-forest">🛡️ Permissions Manager</h2>
-            <p class="text-sm text-gray-500 mt-1">Configure what each role and department office can access. Super Admin always has full access.</p>
-        </div>
-    </div>
+<div class="px-7 py-6" x-data="permissionsManager()">
 
     {{-- Top-level view selector --}}
-    <div class="flex gap-2 mb-7 bg-white rounded-xl p-1.5 shadow-sm border border-slate-200 w-fit">
-        <button type="button"
-            @click="view = 'system'"
-            :class="view === 'system' ? 'bg-deep-forest text-white shadow-md' : 'text-slate-600 hover:bg-slate-100'"
-            class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer">
-            🔑 System Roles
-        </button>
-        <button type="button"
-            @click="view = 'office'"
-            :class="view === 'office' ? 'bg-deep-forest text-white shadow-md' : 'text-slate-600 hover:bg-slate-100'"
-            class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer">
-            🏛️ Office Roles
-        </button>
+    <div class="flex items-center gap-4 mb-6">
+        <p class="text-xs text-gray-400 mr-1">View:</p>
+        <div class="flex gap-1.5 bg-white rounded-xl p-1.5 shadow-sm border border-slate-200 w-fit">
+            <button type="button"
+                @click="view = 'system'"
+                :class="view === 'system' ? 'bg-deep-forest text-white shadow-md' : 'text-slate-600 hover:bg-slate-100'"
+                class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer">
+                🔑 System Roles
+            </button>
+            <button type="button"
+                @click="view = 'office'"
+                :class="view === 'office' ? 'bg-deep-forest text-white shadow-md' : 'text-slate-600 hover:bg-slate-100'"
+                class="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer">
+                🏛️ Office Roles
+            </button>
+        </div>
     </div>
 
     {{-- ══════════════════════════════════════════════════════════════════
@@ -358,10 +353,7 @@
                             <button type="button"
                                 @click="open = !open"
                                 class="w-full flex items-center justify-between px-4 py-2.5 text-xs font-bold text-slate-600 uppercase tracking-wider bg-slate-50 hover:bg-slate-100 transition-colors border-b border-slate-100 cursor-pointer">
-                                <span class="flex items-center gap-1.5">
-                                    <span>{{ $group['icon'] }}</span>
-                                    <span>{{ $group['label'] }}</span>
-                                </span>
+                                <span>{{ $group['label'] }}</span>
                                 <svg :class="open ? 'rotate-180' : ''" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
                                 </svg>

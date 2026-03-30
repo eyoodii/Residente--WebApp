@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ServiceSeederComplete::class,
             AnnouncementSeeder::class,
+            ChatbotKnowledgeSeeder::class,
         ]);
     }
 }

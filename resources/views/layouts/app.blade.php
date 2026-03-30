@@ -67,6 +67,8 @@
 
         <x-toast />
 
+        @include('components.chatbot-widget')
+
         @stack('scripts')
     </body>
 </html>

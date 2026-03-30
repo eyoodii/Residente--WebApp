@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AiAssistantController;
+use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\Admin\ChatbotAdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -90,6 +92,14 @@ Route::get('/ask', [AiAssistantController::class, 'index'])->name('ai-assistant.
 Route::post('/ask/chat', [AiAssistantController::class, 'chat'])
     ->middleware('throttle:30,1')
     ->name('ai-assistant.chat');
+
+// ── RESIDENTE Chatbot Widget API (public, throttled) ────────────────────────
+Route::prefix('chatbot')->name('chatbot.')->middleware('throttle:60,1')->group(function () {
+    Route::post('/chat',         [ChatbotController::class, 'chat'])->name('chat');
+    Route::post('/handoff',      [ChatbotController::class, 'handoff'])->name('handoff');
+    Route::post('/quick-action', [ChatbotController::class, 'quickAction'])->name('quick-action');
+});
+// ────────────────────────────────────────────────────────────────────────────
 
 // About section routes
 Route::prefix('about')->name('about.')->group(function () {
@@ -386,6 +396,30 @@ Route::middleware(['auth', 'verified', 'lockout', 'onboarding.complete'])->group
             Route::put('/{role}',        [RolePermissionController::class, 'update'])->name('update');
             Route::patch('/{role}/meta', [RolePermissionController::class, 'updateMeta'])->name('updateMeta');
             Route::delete('/{role}',     [RolePermissionController::class, 'destroy'])->name('destroy');
+        });
+
+        // Chatbot Management (Admin + SA)
+        Route::prefix('chatbot')->name('chatbot.')->group(function () {
+            Route::get('/',                                   [ChatbotAdminController::class, 'index'])->name('index');
+            Route::get('/create',                             [ChatbotAdminController::class, 'create'])->name('create');
+            Route::post('/',                                  [ChatbotAdminController::class, 'store'])->name('store');
+            Route::get('/{chatbot}/edit',                     [ChatbotAdminController::class, 'edit'])->name('edit');
+            Route::put('/{chatbot}',                          [ChatbotAdminController::class, 'update'])->name('update');
+            Route::delete('/{chatbot}',                       [ChatbotAdminController::class, 'destroy'])->name('destroy');
+            Route::patch('/{chatbot}/toggle',                 [ChatbotAdminController::class, 'toggleActive'])->name('toggle');
+            // Unanswered queries / AI audit
+            Route::get('/unanswered',                         [ChatbotAdminController::class, 'unanswered'])->name('unanswered');
+            Route::patch('/unanswered/{query}/reviewed',      [ChatbotAdminController::class, 'markReviewed'])->name('mark-reviewed');
+            Route::patch('/unanswered/bulk-reviewed',         [ChatbotAdminController::class, 'bulkMarkReviewed'])->name('bulk-reviewed');
+            // Handoff queue
+            Route::get('/handoffs',                           [ChatbotAdminController::class, 'handoffs'])->name('handoffs');
+            Route::patch('/handoffs/{handoff}',               [ChatbotAdminController::class, 'updateHandoff'])->name('update-handoff');
+            // API Keys
+            Route::prefix('api-keys')->name('api-keys.')->group(function () {
+                Route::get('/',                                   [\App\Http\Controllers\Admin\ChatbotApiKeyController::class, 'index'])->name('index');
+                Route::post('/',                                  [\App\Http\Controllers\Admin\ChatbotApiKeyController::class, 'store'])->name('store');
+                Route::patch('/{apiKey}/revoke',                  [\App\Http\Controllers\Admin\ChatbotApiKeyController::class, 'revoke'])->name('revoke');
+            });
         });
     });
 });

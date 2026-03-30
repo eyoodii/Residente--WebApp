@@ -19,44 +19,69 @@
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
         }
-        .dropdown {
-            position: relative;
-        }
+        /* ── Gov Dropdown ─────────────────────── */
+        .dropdown { position: relative; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
+            top: calc(100% + 4px);
             left: 0;
-            background: white;
-            min-width: 220px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            border-radius: 0.5rem;
-            margin-top: 0.5rem;
+            background: #fff;
+            min-width: 240px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+            border-top: 3px solid #c6c013;
+            border-radius: 0 0 0.5rem 0.5rem;
             z-index: 1000;
             overflow: hidden;
         }
         .dropdown:hover .dropdown-menu,
-        .dropdown.active .dropdown-menu {
-            display: block;
-        }
+        .dropdown.active .dropdown-menu { display: block; }
         .dropdown-menu a {
-            display: block;
-            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.1rem;
             color: #034732;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.82rem;
+            font-weight: 500;
+            transition: background 0.18s, color 0.18s, padding-left 0.18s;
+            border-bottom: 1px solid #f0f0f0;
         }
-        .dropdown-menu a:last-child {
-            border-bottom: none;
+        .dropdown-menu a::before { content: '›'; color: #c6c013; font-size: 1.05rem; font-weight: 700; }
+        .dropdown-menu a:last-child { border-bottom: none; }
+        .dropdown-menu a:hover { background: #034732; color: #c6c013; padding-left: 1.4rem; }
+        .dropdown-menu a:hover::before { color: #c6c013; }
+        .dropdown:last-child .dropdown-menu { right: 0; left: auto; }
+
+        /* ── Active nav underline ─────────────── */
+        .nav-gov-link {
+            position: relative;
+            padding: 1rem 0.9rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            transition: color 0.18s;
+            white-space: nowrap;
         }
-        .dropdown-menu a:hover {
-            background: #034732;
-            color: #c6c013;
+        .nav-gov-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: #c6c013;
+            border-radius: 2px 2px 0 0;
+            transform: scaleX(0);
+            transition: transform 0.2s;
         }
-        .dropdown:last-child .dropdown-menu {
-            right: 0;
-            left: auto;
+        .nav-gov-link:hover { color: #c6c013; }
+        .nav-gov-link:hover::after { transform: scaleX(1); }
+
+        /* ── Mobile menu slide ────────────────── */
+        #mobile-menu { animation: slideDown 0.2s ease; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         /* ── Page load entrance animations ── */
@@ -121,52 +146,116 @@
 <body class="bg-gray-50 text-gray-900 antialiased font-sans">
     @include('partials.loader')
 
-    <nav class="bg-deep-forest text-white shadow-lg sticky top-0 z-50 anim-nav">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-2 border-b border-white border-opacity-10">
-                <div class="flex items-center gap-2">
-                    <img src="{{ asset('logo_buguey.png') }}" alt="Buguey Logo" class="w-10 h-10 object-contain rounded-full shadow-sm bg-white">
-                    <div>
-                        <span class="font-bold text-xl tracking-wide block leading-tight">RESIDENTE</span>
-                        <span class="text-xs text-golden-glow font-medium tracking-wide uppercase">Municipality of Buguey</span>
-                    </div>
+    <!-- ══ Government Header ═══════════════════════════════════════════ -->
+    <header class="sticky top-0 z-50 shadow-xl anim-nav">
+
+        {{-- Republic of the Philippines Top Bar --}}
+        <div class="bg-[#0c2340] text-white text-[11px] py-1.5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center gap-2">
+                <div class="flex items-center gap-2 font-semibold tracking-wide">
+                    <svg class="w-4 h-4 flex-shrink-0 opacity-90" viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
+                    </svg>
+                    <span class="hidden sm:inline">REPUBLIC OF THE PHILIPPINES</span>
+                    <span class="sm:hidden">Rep. of the Philippines</span>
+                    <span class="text-white/30 hidden sm:inline">|</span>
+                    <span class="hidden sm:inline text-blue-200 font-normal">Official Government Website</span>
                 </div>
-                <div class="flex flex-col items-end">
-                    <div class="text-xs text-gray-300 font-medium">PST</div>
-                    <div id="pst-clock" class="text-lg font-bold text-golden-glow leading-tight"></div>
+                <div class="flex items-center gap-2 text-blue-200">
+                    <span class="hidden sm:inline" id="pst-date-top"></span>
+                    <span class="text-white/30 hidden sm:inline">|</span>
+                    <span class="text-white/70 hidden sm:inline">PST</span>
+                    <span id="pst-clock" class="font-bold text-white tabular-nums"></span>
                 </div>
             </div>
-            <div class="flex justify-center py-2">
-                <div class="hidden md:flex space-x-4 items-center flex-wrap justify-center">
-                    <a href="{{ url('/') }}" class="hover:text-golden-glow font-medium transition text-sm">Home</a>
-                    <a href="{{ route('news-events') }}" class="hover:text-golden-glow font-medium transition text-sm">News & Events</a>
-                    <a href="{{ route('memos') }}" class="hover:text-golden-glow font-medium transition text-sm">Memos</a>
-                    
-                    <div class="dropdown">
-                        <a href="#about" class="hover:text-golden-glow font-medium transition text-sm cursor-pointer">About ▾</a>
-                        <div class="dropdown-menu">
-                            <a href="{{ route('about.history') }}">History</a>
-                            <a href="{{ route('about.demographic') }}">Demographic Profile</a>
-                            <a href="{{ route('about.barangay-list-map') }}">Barangay List Map</a>
-                            <a href="{{ route('about.map') }}">Map of Buguey</a>
-                            <a href="{{ route('about.barangay-list') }}">List of Barangay</a>
-                            <a href="{{ route('about.subdivision-map') }}">Subdivision Map of Buguey</a>
+        </div>
+
+        {{-- Main Nav --}}
+        <nav class="bg-deep-forest text-white" aria-label="Site navigation">
+
+            {{-- Branding Strip --}}
+            <div class="border-b border-white/10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="{{ asset('logo_buguey.png') }}" alt="Municipality of Buguey Official Seal"
+                             class="w-14 h-14 object-contain rounded-full bg-white p-0.5 shadow-md ring-2 ring-golden-glow/30 flex-shrink-0">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-golden-glow font-bold tracking-[0.18em] uppercase leading-none mb-0.5 hidden sm:block">Republic of the Philippines</span>
+                            <span class="font-extrabold text-lg sm:text-xl tracking-wide leading-tight uppercase">Municipality of Buguey</span>
+                            <span class="text-[11px] text-white/60 tracking-widest uppercase hidden sm:block">Province of Cagayan</span>
                         </div>
                     </div>
-                    
-                    <a href="{{ route('public.services') }}" class="hover:text-golden-glow font-medium transition text-sm">Services</a>
-                    <a href="{{ route('e-bugueyano') }}" class="hover:text-golden-glow font-medium transition text-sm">E-Bugueyano</a>
-                    
+
+                    <div class="flex items-center gap-3">
+                        <div class="hidden lg:flex flex-col items-end text-right border-l border-white/10 pl-4">
+                            <span class="text-golden-glow text-[11px] font-bold tracking-widest uppercase">Official eGov Portal</span>
+                            <span class="text-white/50 text-[10px] tracking-wide">RESIDENTE Digital Platform</span>
+                        </div>
+                        <button id="mobile-menu-btn"
+                                class="md:hidden p-2 rounded hover:bg-white/10 transition focus:outline-none focus:ring-2 focus:ring-golden-glow/50"
+                                aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+                            <svg id="icon-hamburger" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                            <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Desktop Nav Bar --}}
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="hidden md:flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="{{ url('/') }}"       class="nav-gov-link text-golden-glow">Home</a>
+                        <a href="{{ route('news-events') }}" class="nav-gov-link text-white/85">News &amp; Events</a>
+                        <a href="{{ route('memos') }}"      class="nav-gov-link text-white/85">Memos</a>
+
+                        <div class="dropdown">
+                            <a href="#" class="nav-gov-link flex items-center gap-1 text-white/85">
+                                About
+                                <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="{{ route('about.history') }}">History</a>
+                                <a href="{{ route('about.demographic') }}">Demographic Profile</a>
+                                <a href="{{ route('about.barangay-list-map') }}">Barangay List Map</a>
+                                <a href="{{ route('about.map') }}">Map of Buguey</a>
+                                <a href="{{ route('about.barangay-list') }}">List of Barangay</a>
+                                <a href="{{ route('about.subdivision-map') }}">Subdivision Map of Buguey</a>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('public.services') }}" class="nav-gov-link text-white/85">Services</a>
+                        <a href="{{ route('e-bugueyano') }}"     class="nav-gov-link text-white/85">E-Bugueyano</a>
+                    </div>
+
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="bg-sea-green hover:bg-opacity-90 px-4 py-1.5 rounded-md font-bold transition shadow text-sm">Dashboard</a>
+                            <a href="{{ url('/dashboard') }}"
+                               class="flex items-center gap-2 bg-golden-glow text-deep-forest hover:brightness-110 px-4 py-2 rounded font-bold transition shadow-md text-sm uppercase tracking-wide">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                </svg>
+                                Dashboard
+                            </a>
                         @else
                             <div class="dropdown">
-                                <a href="#" class="hover:text-golden-glow font-medium transition text-sm cursor-pointer flex items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                <a href="#"
+                                   class="flex items-center gap-2 border border-golden-glow/50 text-golden-glow hover:bg-white/10 px-4 py-2 rounded font-semibold transition text-sm cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
                                     </svg>
-                                    Account ▾
+                                    Account
+                                    <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                                    </svg>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a href="{{ route('login') }}">Log in</a>
@@ -179,62 +268,123 @@
                     @endif
                 </div>
             </div>
-        </div>
-    </nav>
+
+            {{-- Mobile Navigation --}}
+            <div id="mobile-menu" class="md:hidden hidden border-t border-white/10">
+                <div class="px-4 py-3 space-y-0.5">
+                    <a href="{{ url('/') }}"
+                       class="flex items-center px-3 py-2.5 text-sm font-semibold rounded text-golden-glow bg-white/10">Home</a>
+                    <a href="{{ route('news-events') }}"
+                       class="flex items-center px-3 py-2.5 text-sm font-semibold rounded hover:bg-white/10 hover:text-golden-glow transition">News &amp; Events</a>
+                    <a href="{{ route('memos') }}"
+                       class="flex items-center px-3 py-2.5 text-sm font-semibold rounded hover:bg-white/10 hover:text-golden-glow transition">Memos</a>
+
+                    <div class="mobile-accordion">
+                        <button class="w-full flex justify-between items-center px-3 py-2.5 text-sm font-semibold rounded hover:bg-white/10 hover:text-golden-glow transition text-left">
+                            About
+                            <svg class="w-4 h-4 accordion-chevron transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="accordion-body hidden pl-3 mt-0.5 mb-1 ml-2 border-l-2 border-golden-glow/30 space-y-0.5">
+                            <a href="{{ route('about.history') }}"           class="block px-3 py-2 text-sm text-white/75 hover:text-golden-glow rounded hover:bg-white/5 transition">History</a>
+                            <a href="{{ route('about.demographic') }}"       class="block px-3 py-2 text-sm text-white/75 hover:text-golden-glow rounded hover:bg-white/5 transition">Demographic Profile</a>
+                            <a href="{{ route('about.barangay-list-map') }}" class="block px-3 py-2 text-sm text-white/75 hover:text-golden-glow rounded hover:bg-white/5 transition">Barangay List Map</a>
+                            <a href="{{ route('about.map') }}"               class="block px-3 py-2 text-sm text-white/75 hover:text-golden-glow rounded hover:bg-white/5 transition">Map of Buguey</a>
+                            <a href="{{ route('about.barangay-list') }}"     class="block px-3 py-2 text-sm text-white/75 hover:text-golden-glow rounded hover:bg-white/5 transition">List of Barangay</a>
+                            <a href="{{ route('about.subdivision-map') }}"   class="block px-3 py-2 text-sm text-white/75 hover:text-golden-glow rounded hover:bg-white/5 transition">Subdivision Map</a>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('public.services') }}"
+                       class="flex items-center px-3 py-2.5 text-sm font-semibold rounded hover:bg-white/10 hover:text-golden-glow transition">Services</a>
+                    <a href="{{ route('e-bugueyano') }}"
+                       class="flex items-center px-3 py-2.5 text-sm font-semibold rounded hover:bg-white/10 hover:text-golden-glow transition">E-Bugueyano</a>
+
+                    @if (Route::has('login'))
+                        <div class="pt-3 mt-2 border-t border-white/10 space-y-1">
+                            @auth
+                                <a href="{{ url('/dashboard') }}"
+                                   class="flex items-center justify-center gap-2 w-full px-3 py-2.5 text-sm font-bold rounded bg-golden-glow text-deep-forest">Dashboard</a>
+                            @else
+                                <a href="{{ route('login') }}"
+                                   class="block px-3 py-2.5 text-sm font-semibold rounded hover:bg-white/10 hover:text-golden-glow transition">Log in</a>
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}"
+                                       class="block px-3 py-2.5 text-sm font-bold rounded bg-golden-glow text-deep-forest text-center">Register</a>
+                                @endif
+                            @endauth
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+        </nav>
+    </header>
     
     <script>
+        // ── PST Clock & Date ───────────────────────────────────────────
         function updatePSTClock() {
-            const now = new Date();
-            const pstTime = now.toLocaleString('en-US', { 
-                timeZone: 'Asia/Manila',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-            });
-            document.getElementById('pst-clock').textContent = pstTime;
+            const now  = new Date();
+            const opts = { timeZone: 'Asia/Manila' };
+            const timeStr = now.toLocaleString('en-US', { ...opts, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+            const dateStr = now.toLocaleString('en-US', { ...opts, weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+            const clockEl = document.getElementById('pst-clock');
+            const dateEl  = document.getElementById('pst-date-top');
+            if (clockEl) clockEl.textContent = timeStr;
+            if (dateEl)  dateEl.textContent  = dateStr;
         }
-        
         updatePSTClock();
         setInterval(updatePSTClock, 1000);
 
-        // Dropdown click handling
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+            // ── Mobile Menu Toggle ─────────────────────────────────────
+            const mobileBtn     = document.getElementById('mobile-menu-btn');
+            const mobileMenu    = document.getElementById('mobile-menu');
+            const iconHamburger = document.getElementById('icon-hamburger');
+            const iconClose     = document.getElementById('icon-close');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', function () {
+                    const isOpen = !mobileMenu.classList.contains('hidden');
+                    mobileMenu.classList.toggle('hidden');
+                    iconHamburger.classList.toggle('hidden', !isOpen);
+                    iconClose.classList.toggle('hidden', isOpen);
+                    mobileBtn.setAttribute('aria-expanded', String(!isOpen));
+                });
+            }
+
+            // ── Mobile Accordion ───────────────────────────────────────
+            document.querySelectorAll('.mobile-accordion').forEach(acc => {
+                const btn  = acc.querySelector('button');
+                const body = acc.querySelector('.accordion-body');
+                const chev = acc.querySelector('.accordion-chevron');
+                if (btn) {
+                    btn.addEventListener('click', function () {
+                        const open = !body.classList.contains('hidden');
+                        body.classList.toggle('hidden', open);
+                        chev.style.transform = open ? '' : 'rotate(180deg)';
+                    });
+                }
+            });
+
+            // ── Desktop Dropdowns ──────────────────────────────────────
             const dropdowns = document.querySelectorAll('.dropdown');
-            
             dropdowns.forEach(dropdown => {
                 const trigger = dropdown.querySelector('a[href="#"], a[href="#about"]');
-                
                 if (trigger) {
-                    trigger.addEventListener('click', function(e) {
+                    trigger.addEventListener('click', function (e) {
                         e.preventDefault();
                         e.stopPropagation();
-                        
-                        // Close other dropdowns
-                        dropdowns.forEach(d => {
-                            if (d !== dropdown) {
-                                d.classList.remove('active');
-                            }
-                        });
-                        
-                        // Toggle current dropdown
+                        dropdowns.forEach(d => { if (d !== dropdown) d.classList.remove('active'); });
                         dropdown.classList.toggle('active');
                     });
                 }
             });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.dropdown')) {
-                    dropdowns.forEach(d => d.classList.remove('active'));
-                }
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.dropdown')) dropdowns.forEach(d => d.classList.remove('active'));
             });
-            
-            // Prevent dropdown from closing when clicking inside menu
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                menu.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
+                menu.addEventListener('click', e => e.stopPropagation());
             });
         });
     </script>
@@ -287,6 +437,67 @@
             Scroll down
         </div>
     </div>
+
+    <!-- ── RESIDENTE Acronym Section ── -->
+    <section class="bg-[#0d2418] py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+
+            <!-- Header -->
+            <div class="text-center mb-12 reveal">
+                <span class="inline-block px-4 py-1.5 bg-golden-glow/10 text-golden-glow text-xs font-bold uppercase tracking-widest rounded-full mb-4 border border-golden-glow/20">What is RESIDENTE?</span>
+                <h2 class="text-4xl sm:text-5xl font-extrabold text-white leading-tight tracking-wider">
+                    <span class="text-golden-glow">R</span>ESIDENTE
+                </h2>
+                <p class="mt-3 text-gray-400 text-base max-w-xl mx-auto">
+                    Every letter stands for a core service of the Municipality of Buguey's digital governance platform.
+                </p>
+            </div>
+
+            <!-- Acronym Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-9 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/10">
+                @php
+                $acronym = [
+                    ['R', 'Resident Records',     'Centralized household & resident data registry',         'bg-emerald-500/10 text-emerald-400'],
+                    ['E', 'E-Evaluations',        'Digital verification of documents & applications',       'bg-blue-500/10 text-blue-400'],
+                    ['S', 'Services',             'Online access to all LGU services & permits',            'bg-amber-500/10 text-amber-400'],
+                    ['I', 'Information Hub',      'Real-time news, memos & municipal announcements',        'bg-sky-500/10 text-sky-400'],
+                    ['D', 'Directory',            'Barangay directory & household management',              'bg-violet-500/10 text-violet-400'],
+                    ['E', 'Eddie AI',             '24/7 intelligent chatbot powered by AI',                 'bg-rose-500/10 text-rose-400'],
+                    ['N', 'Network Logs',         'Transparent audit trail of all system activities',       'bg-teal-500/10 text-teal-400'],
+                    ['T', 'Trust & Access',       'Secure, role-based access control for all users',        'bg-orange-500/10 text-orange-400'],
+                    ['E', 'E-Bugueyano',          'A digital identity portal for every citizen',            'bg-lime-500/10 text-lime-400'],
+                ];
+                @endphp
+
+                @foreach($acronym as $i => [$letter, $label, $desc, $color])
+                <div class="reveal reveal-delay-{{ min($i + 1, 5) }} flex flex-col items-center text-center p-5 bg-white/[0.03] hover:bg-white/[0.07] transition-colors duration-200 group cursor-default">
+                    <!-- Big Letter -->
+                    <div class="w-12 h-12 rounded-xl {{ $color }} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200">
+                        <span class="text-2xl font-black" style="font-family: 'Georgia', serif;">{{ $letter }}</span>
+                    </div>
+                    <!-- Label -->
+                    <p class="text-white font-bold text-xs leading-tight mb-1.5">{{ $label }}</p>
+                    <!-- Description -->
+                    <p class="text-white/35 text-[10px] leading-snug hidden lg:block">{{ $desc }}</p>
+                </div>
+                @endforeach
+            </div>
+
+            <!-- Bottom CTA -->
+            <div class="mt-10 text-center reveal">
+                <p class="text-gray-400 text-sm mb-4">Join thousands of Bugueyanos already using the platform</p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-golden-glow hover:opacity-90 text-deep-forest text-sm font-bold rounded-xl transition shadow-lg shadow-yellow-500/20">
+                        Register as Resident
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                    </a>
+                    <a href="{{ route('login') }}" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-white/8 hover:bg-white/15 text-white text-sm font-medium rounded-xl transition border border-white/15">
+                        Sign In
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- ── Featured Video Section ── -->
     <section class="bg-white py-16 px-4 sm:px-6 lg:px-8">
@@ -1107,5 +1318,6 @@
         });
     </script>
 
+    @include('components.chatbot-widget')
 </body>
 </html>
