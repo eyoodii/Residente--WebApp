@@ -259,6 +259,14 @@
             background: linear-gradient(90deg, #c6c013, transparent);
             border-radius: 2px;
         }
+
+        /* Announcements scroll list */
+        .announcements-scroll { max-height: 380px; }
+        @media (min-width: 640px) { .announcements-scroll { max-height: 600px; } }
+
+        /* Announcements preview panel */
+        .preview-panel-min { min-height: 280px; }
+        @media (min-width: 640px) { .preview-panel-min { min-height: 500px; } }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased font-sans">
@@ -501,7 +509,7 @@
                     </span>
                 </div>
 
-                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg anim-hero-title">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight drop-shadow-lg anim-hero-title">
                     The Municipality of<br>
                     <span class="text-golden-glow drop-shadow-lg">Buguey</span>
                 </h1>
@@ -790,7 +798,7 @@
     </script>
 
     <!-- Crossfade Carousel Section -->
-    <section class="relative h-96 overflow-hidden bg-gray-900">
+    <section class="relative h-56 sm:h-96 overflow-hidden bg-gray-900">
         <div class="carousel-fade relative w-full h-full">
             <!-- Slide 1 -->
             <div class="carousel-item active absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-100">
@@ -924,14 +932,14 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 reveal reveal-right">
-                    <div class="stat-card bg-white p-6 rounded-3xl shadow-lg border-t-4 transform translate-y-8" style="border-top-color:#008148;">
+                    <div class="stat-card bg-white p-4 sm:p-6 rounded-3xl shadow-lg border-t-4 transform translate-y-8" style="border-top-color:#008148;">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4" style="background:#f0fdf4;">🗺️</div>
-                        <h3 class="font-extrabold text-deep-forest text-3xl">30</h3>
+                        <h3 class="font-extrabold text-deep-forest text-2xl sm:text-3xl">30</h3>
                         <p class="text-sm font-semibold text-slate-500 mt-1">Distinct Barangays</p>
                     </div>
-                    <div class="stat-card bg-white p-6 rounded-3xl shadow-lg border-t-4" style="border-top-color:#c6c013;">
+                    <div class="stat-card bg-white p-4 sm:p-6 rounded-3xl shadow-lg border-t-4" style="border-top-color:#c6c013;">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4" style="background:#fefce8;">👥</div>
-                        <h3 class="font-extrabold text-deep-forest text-3xl">30,175+</h3>
+                        <h3 class="font-extrabold text-deep-forest text-2xl sm:text-3xl">30,175+</h3>
                         <p class="text-sm font-semibold text-slate-500 mt-1">Strong Population</p>
                     </div>
                 </div>
@@ -1073,7 +1081,7 @@
                 <h2 class="text-2xl sm:text-4xl font-extrabold text-deep-forest mb-4">
                     <span class="text-golden-glow">🔔</span> Happenings Right Now
                 </h2>
-                <p class="text-lg text-gray-600">Stay updated with the latest news and announcements from the Municipality of Buguey</p>
+                <p class="text-base sm:text-lg text-gray-600">Stay updated with the latest news and announcements from the Municipality of Buguey</p>
                 <div class="w-24 h-1 bg-tiger-orange mx-auto mt-4 rounded"></div>
             </div>
             
@@ -1085,9 +1093,9 @@
                         <div class="bg-deep-forest text-white px-6 py-4">
                             <h3 class="text-xl font-bold">Recent Announcements</h3>
                         </div>
-                        <div class="overflow-y-auto" style="max-height: 600px;">
+                        <div class="overflow-y-auto announcements-scroll">
                             @forelse($announcements as $index => $announcement)
-                            <div class="announcement-item cursor-pointer border-b border-gray-100 hover:bg-gray-50 transition p-6" 
+                            <div class="announcement-item cursor-pointer border-b border-gray-100 hover:bg-gray-50 transition p-4 sm:p-6"
                                  data-index="{{ $index }}"
                                  data-title="{{ $announcement->title }}"
                                  data-content="{{ $announcement->content }}"
@@ -1108,7 +1116,7 @@
                                 </div>
                             </div>
                             @empty
-                            <div class="p-8 text-center text-gray-500">
+                            <div class="p-6 sm:p-8 text-center text-gray-500">
                                 <p class="font-bold text-deep-forest text-lg mb-2">No Public Announcements Yet</p>
                                 <p class="text-sm">Stay tuned for upcoming news and updates from your LGU.</p>
                             </div>
@@ -1129,13 +1137,13 @@
                         <div class="bg-sea-green text-white px-6 py-4">
                             <h3 class="text-xl font-bold">Preview</h3>
                         </div>
-                        <div id="preview-panel" class="p-4 sm:p-8" style="min-height: 500px;">
+                        <div id="preview-panel" class="p-4 sm:p-8 preview-panel-min">
                             @if($announcements->isNotEmpty())
                             <div id="preview-content" class="w-full">
                                 <!-- Embedded Link Preview Card -->
                                 <div class="border border-gray-300 rounded-lg overflow-hidden hover:shadow-xl transition-shadow bg-white">
                                     <!-- Preview Image/Banner -->
-                                    <div class="relative h-48 bg-gradient-to-br from-deep-forest via-sea-green to-tiger-orange overflow-hidden">
+                                    <div class="relative h-36 sm:h-48 bg-gradient-to-br from-deep-forest via-sea-green to-tiger-orange overflow-hidden">
                                         <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
                                             <div class="text-center text-white">
                                                 <svg class="w-16 h-16 mx-auto mb-2 opacity-90" fill="currentColor" viewBox="0 0 20 20">
@@ -1275,14 +1283,14 @@
                 RESIDENTE advances key governance metrics — from transparent digital records to citizen-centric service delivery.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="bg-white/10 p-7 rounded-2xl border border-white/20 text-left reveal reveal-delay-1 hover:bg-white/15 transition-colors duration-200">
+                <div class="bg-white/10 p-5 sm:p-7 rounded-2xl border border-white/20 text-left reveal reveal-delay-1 hover:bg-white/15 transition-colors duration-200">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style="background:rgba(198,192,19,0.2);">🌍</div>
                         <h3 class="text-lg font-bold text-golden-glow">Sustainable Development Goals</h3>
                     </div>
                     <p class="text-sm text-gray-200 leading-relaxed">Supporting SDG 11 <em class="text-white/70">(Sustainable Cities)</em>, SDG 9 <em class="text-white/70">(Industry &amp; Innovation)</em>, SDG 10 <em class="text-white/70">(Reduced Inequalities)</em>, and SDG 17 <em class="text-white/70">(Partnerships for Goals)</em>.</p>
                 </div>
-                <div class="bg-white/10 p-7 rounded-2xl border border-white/20 text-left reveal reveal-delay-2 hover:bg-white/15 transition-colors duration-200">
+                <div class="bg-white/10 p-5 sm:p-7 rounded-2xl border border-white/20 text-left reveal reveal-delay-2 hover:bg-white/15 transition-colors duration-200">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style="background:rgba(198,192,19,0.2);">🏆</div>
                         <h3 class="text-lg font-bold text-golden-glow">Seal of Good Local Governance</h3>
@@ -1297,20 +1305,18 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-2xl sm:text-4xl font-extrabold text-deep-forest mb-4">Population Density Map</h2>
-                <p class="text-lg text-gray-600">Comprehensive land use data of Municipality of Buguey</p>
+                <p class="text-base sm:text-lg text-gray-600">Comprehensive land use data of Municipality of Buguey</p>
                 <div class="w-24 h-1 bg-sea-green mx-auto mt-4 rounded"></div>
-                <p class="text-sm text-gray-500 mt-4">Hover over the map to zoom in for better detail</p>
+                <p class="text-sm text-gray-500 mt-4 hidden sm:block">Hover over the map to zoom in for better detail</p>
             </div>
             
-            <div class="flex justify-center">
-                <div class="map-container relative inline-block overflow-hidden rounded-xl shadow-2xl border-4 border-deep-forest bg-white">
-                    <img 
-                        src="{{ asset('Map.png') }}" 
-                        alt="Population Density Map - Municipality of Buguey, Province of Cagayan" 
-                        class="map-image transition-transform duration-500 ease-in-out cursor-zoom-in max-w-full h-auto"
-                        style="max-height: 600px;"
-                    />
-                </div>
+            <div class="map-container relative block w-full overflow-hidden rounded-xl shadow-2xl border-4 border-deep-forest bg-white">
+                <img
+                    src="{{ asset('Map.png') }}"
+                    alt="Population Density Map - Municipality of Buguey, Province of Cagayan"
+                    class="map-image transition-transform duration-500 ease-in-out cursor-zoom-in w-full h-auto"
+                    style="max-height: 600px; object-fit: contain;"
+                />
             </div>
         </div>
         
@@ -1338,14 +1344,14 @@
     <section id="location" class="py-8 md:py-12 lg:py-16 bg-gray-50 border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-extrabold text-deep-forest">Locate the Municipal Hall</h2>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-deep-forest">Locate the Municipal Hall</h2>
                 <div class="w-24 h-1 bg-sea-green mx-auto mt-4 rounded"></div>
                 <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Visit us for physical inquiries, offline processing of clearances, and other local government assistance.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                 
-                <div class="p-8 lg:col-span-1 bg-deep-forest text-white flex flex-col justify-center relative overflow-hidden">
+                <div class="p-5 sm:p-8 lg:col-span-1 bg-deep-forest text-white flex flex-col justify-center relative overflow-hidden">
                     <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-sea-green rounded-full opacity-50 blur-2xl"></div>
                     
                     <h3 class="text-2xl font-bold mb-6 relative z-10 text-golden-glow">Get in Touch</h3>
@@ -1375,7 +1381,7 @@
                     </ul>
                 </div>
 
-                <div class="lg:col-span-2 min-h-[400px] w-full relative">
+                <div class="lg:col-span-2 min-h-[300px] sm:min-h-[400px] w-full relative">
                     <iframe 
                         class="absolute inset-0 w-full h-full border-0" 
                         src="https://maps.google.com/maps?q=Buguey,+Cagayan,+Philippines&t=&z=13&ie=UTF8&iwloc=&output=embed" 

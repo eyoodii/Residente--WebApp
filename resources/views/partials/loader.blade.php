@@ -70,18 +70,7 @@
         <span class="loader-dot" style="animation-delay: 0.15s;"></span>
         <span class="loader-dot" style="animation-delay: 0.3s;"></span>
     </div>
-
-    {{-- Subtitle --}}
-    <p style="
-        color: rgba(255,255,255,0.35);
-        font-size: 11px;
-        font-family: 'Figtree', sans-serif;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        animation: loaderFadeUp 0.5s ease 1s both;
-    ">
-        Municipality of Buguey &middot; Province of Cagayan
-    </p>
+    
 
     {{-- Bottom progress bar --}}
     <div style="

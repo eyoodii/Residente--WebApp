@@ -389,9 +389,9 @@
                            class="flex-1 sm:flex-initial px-6 py-3 border-2 border-gray-300 rounded-xl font-bold text-gray-700 hover:bg-gray-50 transition text-center shadow-sm">
                             Cancel
                         </a>
-                        <button type="submit" 
-                                class="flex-1 sm:flex-initial px-8 py-3 bg-gradient-to-r from-tiger-orange to-burnt-tangerine hover:from-burnt-tangerine hover:to-tiger-orange text-white rounded-xl font-bold shadow-lg transition transform hover:scale-105">
-                            💾 Save Changes
+                        <button type="submit"
+                                class="flex-1 sm:flex-initial px-8 py-3 bg-gradient-to-r from-deep-forest to-sea-green hover:from-sea-green hover:to-deep-forest text-white rounded-xl font-bold shadow-lg transition">
+                            Save Changes
                         </button>
                     </div>
                 </div>
