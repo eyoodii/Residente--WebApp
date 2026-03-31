@@ -107,29 +107,6 @@
     <!-- ══ Government Header (Sticky) ══════════════════════════════════ -->
     <header class="sticky top-0 z-50 shadow-xl">
 
-        {{-- Top Banner: Republic of the Philippines --}}
-        <div class="bg-[#0c2340] text-white text-[11px] py-1.5">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center gap-2">
-                <div class="flex items-center gap-2 font-semibold tracking-wide">
-                    {{-- PH Sun icon --}}
-                    <svg class="w-4 h-4 flex-shrink-0 opacity-90" viewBox="0 0 24 24" fill="currentColor">
-                        <circle cx="12" cy="12" r="4"/>
-                        <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
-                    </svg>
-                    <span class="hidden xs:inline">REPUBLIC OF THE PHILIPPINES</span>
-                    <span class="xs:hidden">Rep. of the Philippines</span>
-                    <span class="text-white/30 hidden sm:inline">|</span>
-                    <span class="hidden sm:inline text-blue-200 font-normal">Official Government Website</span>
-                </div>
-                <div class="flex items-center gap-2 text-blue-200">
-                    <span class="hidden sm:inline" id="pst-date-top"></span>
-                    <span class="text-white/30 hidden sm:inline">|</span>
-                    <span class="text-white/70 hidden sm:inline">PST</span>
-                    <span id="pst-clock" class="font-bold text-white tabular-nums"></span>
-                </div>
-            </div>
-        </div>
-
         {{-- Main Nav --}}
         <nav class="bg-deep-forest text-white" aria-label="Site navigation">
 
@@ -141,18 +118,19 @@
                     <div class="flex items-center gap-3">
                         <img src="{{ asset('logo_buguey.png') }}" alt="Municipality of Buguey Official Seal"
                              class="w-14 h-14 object-contain rounded-full bg-white p-0.5 shadow-md ring-2 ring-golden-glow/30 flex-shrink-0">
-                        <div class="flex flex-col">
-                            <span class="text-[10px] text-golden-glow font-bold tracking-[0.18em] uppercase leading-none mb-0.5 hidden sm:block">Republic of the Philippines</span>
-                            <span class="font-extrabold text-lg sm:text-xl tracking-wide leading-tight uppercase">Municipality of Buguey</span>
-                            <span class="text-[11px] text-white/60 tracking-widest uppercase hidden sm:block">Province of Cagayan</span>
+                        <div class="flex flex-col leading-none gap-0">
+                            <span class="text-[10px] text-golden-glow font-bold tracking-[0.18em] uppercase leading-none hidden sm:block" style="font-family: 'Times New Roman', Times, serif;">Republic of the Philippines</span>
+                            <span class="font-extrabold text-lg sm:text-xl tracking-wide leading-none uppercase" style="font-family: 'Times New Roman', Times, serif;">Municipality of Buguey</span>
+                            <span class="text-[11px] text-white/60 tracking-widest uppercase leading-none hidden sm:block" style="font-family: 'Times New Roman', Times, serif;">Province of Cagayan</span>
                         </div>
                     </div>
 
                     {{-- Right: Official badge + mobile toggle --}}
                     <div class="flex items-center gap-3">
-                        <div class="hidden lg:flex flex-col items-end text-right border-l border-white/10 pl-4">
-                            <span class="text-golden-glow text-[11px] font-bold tracking-widest uppercase">Official eGov Portal</span>
-                            <span class="text-white/50 text-[10px] tracking-wide">RESIDENTE Digital Platform</span>
+                        <div class="hidden lg:flex flex-col items-end text-right border-l border-white/10 pl-4 gap-0.5">
+                            <span id="pst-clock" class="text-golden-glow text-[15px] font-bold tabular-nums leading-none"></span>
+                            <span id="pst-date-top" class="text-white/60 text-[11px] tracking-wide leading-none mt-0.5"></span>
+                            <span class="text-white/30 text-[9px] tracking-widest uppercase leading-none mt-0.5">Philippine Standard Time</span>
                         </div>
 
                         {{-- Mobile hamburger --}}

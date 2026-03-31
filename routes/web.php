@@ -155,7 +155,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::middleware(['auth', 'lockout'])->group(function () {
     // Dashboard - accessible to all authenticated users (shows verification prompts if needed)
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])
-        ->middleware('verified')
+        ->middleware(['verified', 'philsys.complete'])
         ->name('dashboard');
     
     // AJAX endpoint for loading more announcements
@@ -165,7 +165,7 @@ Route::middleware(['auth', 'lockout'])->group(function () {
 });
 
 // Routes requiring email verification (without onboarding requirement)
-Route::middleware(['auth', 'verified', 'lockout'])->group(function () {
+Route::middleware(['auth', 'verified', 'lockout', 'philsys.complete'])->group(function () {
     // Profile Onboarding (Required after PhilSys verification)
     Route::prefix('profile/onboarding')->name('profile.onboarding.')->group(function () {
         Route::get('/', [ProfileController::class, 'showOnboarding'])->name('show');

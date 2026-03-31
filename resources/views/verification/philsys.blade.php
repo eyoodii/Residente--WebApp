@@ -8,7 +8,8 @@
 @endpush
 
 @section('content')
-<!-- Back to Dashboard -->
+<!-- Back to Dashboard (only visible if already PhilSys-verified, e.g. admin manual re-check) -->
+@if(auth()->user()->philsys_verified_at)
 <div class="mb-6">
     <a href="{{ route('dashboard') }}" class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-sea-green transition-colors">
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -17,6 +18,23 @@
         Back to Dashboard
     </a>
 </div>
+@else
+<!-- Locked in: show logout option only -->
+<div class="mb-6 flex flex-wrap items-center justify-between gap-2">
+    <div class="flex items-center gap-2 text-sm text-gray-500">
+        <svg class="w-4 h-4 text-tiger-orange" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+        </svg>
+        <span>Complete verification to access the portal</span>
+    </div>
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="text-sm text-gray-400 hover:text-gray-700 underline transition-colors">
+            Log Out
+        </button>
+    </form>
+</div>
+@endif
 
 <!-- Alert Boxes -->
 @if (session('error'))
@@ -44,35 +62,35 @@
             <div class="flex items-center justify-between">
                 <!-- Step 1: Upload Documents -->
                 <div class="flex-1 flex flex-col items-center relative">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-sea-green to-deep-forest flex items-center justify-center mb-2 shadow-lg relative z-10 ring-4 ring-sea-green/20">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-sea-green to-deep-forest flex items-center justify-center mb-2 shadow-lg relative z-10 ring-4 ring-sea-green/20">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                         </svg>
                     </div>
-                    <span class="text-xs font-bold text-sea-green uppercase tracking-wide">Upload Documents</span>
+                    <span class="text-[10px] sm:text-xs font-bold text-sea-green uppercase tracking-wide text-center">Upload Docs</span>
                     <div class="absolute top-6 left-1/2 w-full h-1 bg-gradient-to-r from-sea-green to-gray-300" style="margin-left: 50%;"></div>
                 </div>
 
                 <!-- Step 2: Verifying -->
                 <div class="flex-1 flex flex-col items-center relative">
-                    <div id="step-verifying" class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center mb-2 relative z-10 transition-all duration-500 ring-4 ring-gray-200">
-                        <svg class="w-6 h-6 text-gray-500 transition-colors duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div id="step-verifying" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-300 flex items-center justify-center mb-2 relative z-10 transition-all duration-500 ring-4 ring-gray-200">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-500 transition-colors duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                         </svg>
                     </div>
-                    <span id="step-verifying-text" class="text-xs font-medium text-gray-500 uppercase tracking-wide transition-colors duration-500">Verifying</span>
+                    <span id="step-verifying-text" class="text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wide transition-colors duration-500">Verifying</span>
                     <div id="progress-line-1" class="absolute top-6 right-1/2 w-full h-1 bg-gray-300 transition-all duration-700" style="margin-right: 50%;"></div>
                     <div id="progress-line-2" class="absolute top-6 left-1/2 w-full h-1 bg-gray-300 transition-all duration-700" style="margin-left: 50%;"></div>
                 </div>
 
                 <!-- Step 3: Complete -->
                 <div class="flex-1 flex flex-col items-center relative">
-                    <div id="step-complete" class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center mb-2 relative z-10 transition-all duration-500 ring-4 ring-gray-200">
-                        <svg class="w-6 h-6 text-gray-500 transition-colors duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div id="step-complete" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-300 flex items-center justify-center mb-2 relative z-10 transition-all duration-500 ring-4 ring-gray-200">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-500 transition-colors duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
                     </div>
-                    <span id="step-complete-text" class="text-xs font-medium text-gray-500 uppercase tracking-wide transition-colors duration-500">Complete</span>
+                    <span id="step-complete-text" class="text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-wide transition-colors duration-500">Complete</span>
                     <div id="progress-line-3" class="absolute top-6 right-1/2 w-full h-1 bg-gray-300 transition-all duration-700" style="margin-right: 50%;"></div>
                 </div>
             </div>
@@ -89,7 +107,7 @@
     </div>
 
     <!-- Verification Form -->
-    <div class="p-6">
+    <div class="p-4 sm:p-6">
                 <form method="POST" action="{{ route('verification.philsys.verify') }}" id="verification-form" enctype="multipart/form-data">
                     @csrf
                     
@@ -247,10 +265,33 @@
                         </div>
                         
                         <!-- Processing State -->
-                        <div id="processing-state" class="hidden mt-4 text-center py-6 border-2 border-blue-200 rounded-lg bg-blue-50">
-                            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-3"></div>
-                            <p class="text-blue-600 font-medium">🔍 Scanning both card images...</p>
-                            <p class="text-gray-500 text-sm mt-1">Please wait, this may take a few moments</p>
+                        <div id="processing-state" class="hidden mt-4 text-center py-8 border-2 border-sea-green/30 rounded-lg bg-gradient-to-br from-deep-forest/5 to-sea-green/10 relative overflow-hidden">
+                            <!-- Shimmer background -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[ocrShimmer_2s_ease-in-out_infinite]"></div>
+
+                            <!-- ID card scan animation -->
+                            <div class="relative inline-block mb-4">
+                                <div class="w-20 h-14 rounded-lg border-2 border-sea-green/40 bg-white shadow-md flex items-center justify-center relative overflow-hidden">
+                                    <!-- Card icon -->
+                                    <svg class="w-8 h-8 text-sea-green/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/>
+                                    </svg>
+                                    <!-- Scan line sweeping -->
+                                    <div class="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-sea-green to-transparent animate-[scanSweep_1.5s_ease-in-out_infinite]"></div>
+                                </div>
+                                <!-- Pulsing ring -->
+                                <div class="absolute -inset-2 rounded-xl border-2 border-sea-green/20 animate-[ocrPulse_2s_ease-in-out_infinite]"></div>
+                            </div>
+
+                            <p class="text-deep-forest font-semibold text-sm">Scanning card images...</p>
+                            <p class="text-gray-500 text-xs mt-1">Extracting ID number using OCR</p>
+
+                            <!-- Progress dots -->
+                            <div class="flex justify-center gap-1.5 mt-3">
+                                <span class="w-2 h-2 rounded-full bg-sea-green animate-[ocrDot_1.2s_ease-in-out_infinite]" style="animation-delay:0s"></span>
+                                <span class="w-2 h-2 rounded-full bg-sea-green animate-[ocrDot_1.2s_ease-in-out_infinite]" style="animation-delay:0.2s"></span>
+                                <span class="w-2 h-2 rounded-full bg-sea-green animate-[ocrDot_1.2s_ease-in-out_infinite]" style="animation-delay:0.4s"></span>
+                            </div>
                         </div>
                         
                         <!-- Success State -->
@@ -422,6 +463,98 @@
             </div>
         </div>
 
+{{-- PhilSys Upload Loader Overlay --}}
+<div id="philsys-upload-loader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-deep-forest via-[#022b1f] to-[#011a13] transition-all duration-500 opacity-0 invisible pointer-events-none">
+    {{-- Subtle glow --}}
+    <div class="absolute w-72 h-72 rounded-full bg-[radial-gradient(circle,rgba(0,129,72,0.15)_0%,transparent_70%)] pointer-events-none"></div>
+
+    {{-- Animated ID card icon --}}
+    <div class="relative mb-6" style="animation: loaderFadeUp 0.5s ease both;">
+        {{-- Outer pulsing ring --}}
+        <div class="absolute -inset-4 rounded-2xl border-2 border-golden-glow/20 animate-[ocrPulse_2s_ease-in-out_infinite]"></div>
+        {{-- Card container --}}
+        <div class="w-28 h-20 rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur flex items-center justify-center relative overflow-hidden shadow-2xl">
+            {{-- Card silhouette --}}
+            <svg class="w-12 h-12 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/>
+            </svg>
+            {{-- Scan line --}}
+            <div class="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-golden-glow to-transparent animate-[scanSweep_1.5s_ease-in-out_infinite]"></div>
+        </div>
+    </div>
+
+    {{-- Upload arrow animation --}}
+    <div class="mb-5" style="animation: loaderFadeUp 0.5s ease 0.2s both;">
+        <svg class="w-8 h-8 text-golden-glow animate-[uploadArrow_1.2s_ease-in-out_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+        </svg>
+    </div>
+
+    {{-- Text --}}
+    <p class="text-white font-bold text-lg tracking-wide mb-1" style="font-family:'Figtree',sans-serif; animation: loaderFadeUp 0.5s ease 0.3s both;">
+        Verifying Your PhilSys ID
+    </p>
+    <p id="upload-loader-status" class="text-white/50 text-sm mb-6 transition-opacity duration-300" style="font-family:'Figtree',sans-serif; animation: loaderFadeUp 0.5s ease 0.4s both;">
+        Uploading documents & verifying identity...
+    </p>
+
+    {{-- Three-dot bounce --}}
+    <div class="flex gap-1.5 mb-6" style="animation: loaderFadeUp 0.5s ease 0.5s both;">
+        <span class="w-2.5 h-2.5 rounded-full bg-golden-glow block animate-[loaderDotBounce_1.2s_ease-in-out_infinite]" style="animation-delay:0s"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-golden-glow block animate-[loaderDotBounce_1.2s_ease-in-out_infinite]" style="animation-delay:0.15s"></span>
+        <span class="w-2.5 h-2.5 rounded-full bg-golden-glow block animate-[loaderDotBounce_1.2s_ease-in-out_infinite]" style="animation-delay:0.3s"></span>
+    </div>
+
+    {{-- Bottom progress bar --}}
+    <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/5 overflow-hidden">
+        <div class="h-full bg-gradient-to-r from-deep-forest via-golden-glow to-sea-green rounded animate-[loaderProgress_2s_ease-in-out_infinite]"></div>
+    </div>
+</div>
+
+<style>
+    /* PhilSys Upload Loader Animations */
+    @keyframes scanSweep {
+        0%   { top: 0; opacity: 0; }
+        10%  { opacity: 1; }
+        90%  { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+    }
+    @keyframes ocrPulse {
+        0%, 100% { opacity: 0.3; transform: scale(1); }
+        50%      { opacity: 0.8; transform: scale(1.05); }
+    }
+    @keyframes ocrDot {
+        0%, 80%, 100% { transform: scale(0.5); opacity: 0.3; }
+        40%            { transform: scale(1);   opacity: 1; }
+    }
+    @keyframes ocrShimmer {
+        0%   { transform: translateX(-100%); }
+        100% { transform: translateX(200%); }
+    }
+    @keyframes uploadArrow {
+        0%, 100% { transform: translateY(0); opacity: 0.7; }
+        50%      { transform: translateY(-6px); opacity: 1; }
+    }
+    @keyframes loaderDotBounce {
+        0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+        40%            { transform: scale(1);   opacity: 1; }
+    }
+    @keyframes loaderFadeUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes loaderProgress {
+        0%   { width: 0%; margin-left: 0; }
+        50%  { width: 60%; margin-left: 20%; }
+        100% { width: 0%; margin-left: 100%; }
+    }
+    #philsys-upload-loader.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+</style>
+
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -519,7 +652,33 @@
                 
                 // Update progress to verifying step
                 updateProgressStep(2);
-                
+
+                // Show the full-screen upload loader
+                const uploadLoader = document.getElementById('philsys-upload-loader');
+                if (uploadLoader) {
+                    uploadLoader.classList.add('active');
+
+                    // Cycle status messages for visual feedback
+                    const statusEl = document.getElementById('upload-loader-status');
+                    const messages = [
+                        'Uploading documents & verifying identity...',
+                        'Encrypting & securing your data...',
+                        'Validating PhilSys ID number...',
+                        'Almost there, finalizing verification...',
+                    ];
+                    let msgIndex = 0;
+                    const msgInterval = setInterval(() => {
+                        msgIndex = (msgIndex + 1) % messages.length;
+                        if (statusEl) {
+                            statusEl.style.opacity = '0';
+                            setTimeout(() => {
+                                statusEl.textContent = messages[msgIndex];
+                                statusEl.style.opacity = '1';
+                            }, 300);
+                        }
+                    }, 2500);
+                }
+
                 // Show loading state on submit button
                 const submitBtn = verificationForm.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
@@ -659,28 +818,82 @@
 
                 reader.onload = function(evt) {
                     img.onload = function() {
-                        // Draw image to offscreen canvas for jsQR to process
-                        qrImageCanvas.width = img.width;
-                        qrImageCanvas.height = img.height;
-                        const ctx = qrImageCanvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0);
-
-                        const imageData = ctx.getImageData(0, 0, img.width, img.height);
-
                         if (typeof jsQR === 'undefined') {
                             showError('QR scanner library not loaded. Please refresh and try again.');
                             return;
                         }
 
-                        const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                            inversionAttempts: 'attemptBoth',
-                        });
+                        // Try multiple resolutions and preprocessing to find QR code
+                        const attempts = [];
+
+                        // Helper: draw image to canvas at given max dimension and return ImageData
+                        function getImageData(maxDim, enhanceContrast) {
+                            const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+                            const w = Math.round(img.width * scale);
+                            const h = Math.round(img.height * scale);
+                            qrImageCanvas.width = w;
+                            qrImageCanvas.height = h;
+                            const ctx = qrImageCanvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, w, h);
+
+                            if (enhanceContrast) {
+                                const data = ctx.getImageData(0, 0, w, h);
+                                const d = data.data;
+                                // Convert to grayscale and boost contrast
+                                for (let i = 0; i < d.length; i += 4) {
+                                    let gray = 0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2];
+                                    // Increase contrast
+                                    gray = gray < 128 ? Math.max(0, gray * 0.5) : Math.min(255, 128 + (gray - 128) * 2);
+                                    d[i] = d[i+1] = d[i+2] = gray;
+                                }
+                                ctx.putImageData(data, 0, 0);
+                            }
+
+                            return ctx.getImageData(0, 0, w, h);
+                        }
+
+                        // Attempt 1: Original size (capped at 1500px)
+                        const sizes = [1500, 1000, 800, 600];
+                        const options = { inversionAttempts: 'attemptBoth' };
+                        let code = null;
+
+                        for (const size of sizes) {
+                            // Normal
+                            let imageData = getImageData(size, false);
+                            code = jsQR(imageData.data, imageData.width, imageData.height, options);
+                            if (code) break;
+
+                            // Enhanced contrast
+                            imageData = getImageData(size, true);
+                            code = jsQR(imageData.data, imageData.width, imageData.height, options);
+                            if (code) break;
+                        }
+
+                        // Attempt with rotations if still not found (phone orientation)
+                        if (!code) {
+                            for (const angle of [90, 180, 270]) {
+                                const maxDim = 1000;
+                                const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+                                const w = Math.round(img.width * scale);
+                                const h = Math.round(img.height * scale);
+                                const rw = (angle === 90 || angle === 270) ? h : w;
+                                const rh = (angle === 90 || angle === 270) ? w : h;
+                                qrImageCanvas.width = rw;
+                                qrImageCanvas.height = rh;
+                                const ctx = qrImageCanvas.getContext('2d');
+                                ctx.translate(rw / 2, rh / 2);
+                                ctx.rotate((angle * Math.PI) / 180);
+                                ctx.drawImage(img, -w / 2, -h / 2, w, h);
+                                const imageData = ctx.getImageData(0, 0, rw, rh);
+                                code = jsQR(imageData.data, imageData.width, imageData.height, options);
+                                if (code) break;
+                            }
+                        }
 
                         if (code) {
-                            // QR code found in the image!
                             handleQRCodeDetected(code.data);
                         } else {
-                            showError('❌ No QR code found in the image. Please upload a clearer photo of the QR code, or ensure the QR code is fully visible and unobstructed.');
+                            showError('No QR code found in the image. Try these tips:\n• Crop the photo to focus on just the QR code area\n• Ensure the QR code is not blurry, obstructed, or at an angle\n• Use good lighting without glare or shadows\n• Try uploading a different photo of the QR code');
                         }
                     };
                     img.src = evt.target.result;

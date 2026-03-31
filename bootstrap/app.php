@@ -26,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'log.activity'     => \App\Http\Middleware\LogActivity::class,
             'philsys.verified' => \App\Http\Middleware\EnsurePhilSysVerified::class,
             'onboarding.complete' => \App\Http\Middleware\EnsureOnboardingComplete::class,
+            'philsys.complete'   => \App\Http\Middleware\EnsurePhilSysComplete::class,
             'department'       => \App\Http\Middleware\DepartmentRole::class,
             'permission'       => \App\Http\Middleware\CheckPermission::class,
             'chatbot.api'      => \App\Http\Middleware\VerifyChatbotApiKey::class,
@@ -42,6 +43,10 @@ return Application::configure(basePath: dirname(__DIR__))
             }
             if ($user && $user->isAdmin()) {
                 return route('admin.dashboard');
+            }
+            // If email verified but PhilSys not done, lock into verification
+            if ($user && $user->hasVerifiedEmail() && !$user->philsys_verified_at) {
+                return route('verification.philsys');
             }
             return route('dashboard');
         });

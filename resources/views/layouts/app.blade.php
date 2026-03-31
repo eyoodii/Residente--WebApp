@@ -20,7 +20,7 @@
                     <div class="flex items-center gap-4">
                         <img src="{{ asset('logo_buguey.png') }}" alt="Buguey Logo" class="w-12 h-12 object-contain rounded-2xl shadow-lg ring-2 ring-white transform transition hover:scale-105 bg-white">
                         <div>
-                            <span class="font-extrabold text-2xl tracking-tight text-slate-900 block leading-none">RESIDENTE APP</span>
+                            <span class="font-extrabold text-lg sm:text-2xl tracking-tight text-slate-900 block leading-none">RESIDENTE APP</span>
                             <span class="text-xs font-bold text-emerald-600 tracking-widest uppercase">Municipality of Buguey</span>
                         </div>
                     </div>

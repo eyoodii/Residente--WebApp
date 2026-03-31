@@ -62,6 +62,11 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('admin.dashboard', absolute: false));
         }
 
+        // If email is verified but PhilSys is not, go straight to PhilSys verification
+        if ($user->hasVerifiedEmail() && !$user->philsys_verified_at) {
+            return redirect()->route('verification.philsys');
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

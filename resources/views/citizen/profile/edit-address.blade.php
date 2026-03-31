@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Address Information | RESIDENTE App</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-gray-100 antialiased font-sans min-h-screen">
+@extends('layouts.citizen')
 
-    <div class="p-8">
+@section('title', 'Edit Address Information | RESIDENTE App')
+@section('page-title', 'Edit Address Information')
+
+@section('content')
+    <div class="p-4 sm:p-8">
         <div class="max-w-4xl mx-auto">
             <div class="mb-6">
                 <a href="{{ route('citizen.profile.index') }}" class="text-sea-green hover:text-deep-forest font-bold text-sm flex items-center gap-1">
@@ -21,7 +17,7 @@
                     <h1 class="text-2xl font-bold text-white">Edit Address Information</h1>
                 </div>
 
-                <form method="POST" action="{{ route('citizen.profile.address.update') }}" class="p-6">
+                <form method="POST" action="{{ route('citizen.profile.address.update') }}" class="p-4 sm:p-6">
                     @csrf
                     @method('PUT')
 
@@ -37,7 +33,7 @@
                     @endif
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        
+
                         <!-- Purok/Street -->
                         <div class="md:col-span-2">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Purok/Street <span class="text-red-500">*</span></label>
@@ -88,6 +84,4 @@
             </div>
         </div>
     </div>
-
-</body>
-</html>
+@endsection

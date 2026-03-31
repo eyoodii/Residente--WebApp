@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Household Member | RESIDENTE App</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-gray-100 antialiased font-sans min-h-screen">
+@extends('layouts.citizen')
 
-    <div class="p-8">
+@section('title', 'Add Household Member | RESIDENTE App')
+@section('page-title', 'Add Household Member')
+
+@section('content')
+    <div class="p-4 sm:p-8">
         <div class="max-w-4xl mx-auto">
             <div class="mb-6">
                 <a href="{{ route('citizen.profile.index') }}" class="text-sea-green hover:text-deep-forest font-bold text-sm flex items-center gap-1">
@@ -21,7 +17,7 @@
                     <h1 class="text-2xl font-bold text-white">Add Household Member</h1>
                 </div>
 
-                <form method="POST" action="{{ route('citizen.profile.members.store') }}" class="p-6">
+                <form method="POST" action="{{ route('citizen.profile.members.store') }}" class="p-4 sm:p-6">
                     @csrf
 
                     @if($errors->any())
@@ -36,7 +32,7 @@
                     @endif
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        
+
                         <!-- First Name -->
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">First Name <span class="text-red-500">*</span></label>
@@ -199,7 +195,7 @@
                                     class="w-4 h-4 text-sea-green border-gray-300 rounded focus:ring-sea-green">
                                 <span class="text-sm font-bold text-gray-900">Currently Working Abroad (Active OFW)</span>
                             </label>
-                            
+
                             <div id="active-ofw-details" class="ml-6 space-y-4 {{ old('is_active_ofw') ? '' : 'hidden' }}">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
@@ -229,7 +225,7 @@
                                     class="w-4 h-4 text-sea-green border-gray-300 rounded focus:ring-sea-green">
                                 <span class="text-sm font-bold text-gray-900">Returned OFW (Last 5 Years)</span>
                             </label>
-                            
+
                             <div id="returned-ofw-details" class="ml-6 space-y-4 {{ old('is_returned_ofw') ? '' : 'hidden' }}">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
@@ -259,7 +255,7 @@
                                 <span class="text-sm font-bold text-gray-900">Local Migrant Worker</span>
                                 <span class="text-xs text-gray-500">(Working outside province for 0-6 months)</span>
                             </label>
-                            
+
                             <div id="local-migrant-details" class="ml-6 {{ old('is_local_migrant') ? '' : 'hidden' }}">
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-2">Current Location</label>
@@ -269,19 +265,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <script>
-                        function toggleOFWSection(type) {
-                            const checkbox = document.getElementById('is_' + (type === 'active' ? 'active_ofw' : type === 'returned' ? 'returned_ofw' : 'local_migrant'));
-                            const details = document.getElementById((type === 'active' ? 'active' : type === 'returned' ? 'returned' : 'local') + '-' + (type === 'local' ? 'migrant' : 'ofw') + '-details');
-                            
-                            if (checkbox.checked) {
-                                details.classList.remove('hidden');
-                            } else {
-                                details.classList.add('hidden');
-                            }
-                        }
-                    </script>
 
                     <div class="mt-8 flex gap-4 justify-end">
                         <a href="{{ route('citizen.profile.index') }}" class="px-6 py-2 border border-gray-300 rounded-lg font-bold text-gray-700 hover:bg-gray-50 transition">
@@ -295,6 +278,18 @@
             </div>
         </div>
     </div>
+@endsection
 
-</body>
-</html>
+@push('scripts')
+<script>
+    function toggleOFWSection(type) {
+        const checkbox = document.getElementById('is_' + (type === 'active' ? 'active_ofw' : type === 'returned' ? 'returned_ofw' : 'local_migrant'));
+        const details = document.getElementById((type === 'active' ? 'active' : type === 'returned' ? 'returned' : 'local') + '-' + (type === 'local' ? 'migrant' : 'ofw') + '-details');
+        if (checkbox.checked) {
+            details.classList.remove('hidden');
+        } else {
+            details.classList.add('hidden');
+        }
+    }
+</script>
+@endpush

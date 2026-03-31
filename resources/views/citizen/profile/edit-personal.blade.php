@@ -1,9 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.citizen')
 
-@section('title', 'Edit Personal Information')
+@section('title', 'Edit Personal Information | RESIDENTE App')
+@section('page-title', 'Edit Personal Information')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+<div class="py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-5xl mx-auto">
         <!-- Breadcrumb -->
         <nav class="mb-6" aria-label="Breadcrumb">
@@ -22,21 +23,21 @@
         <!-- Main Card -->
         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
             <!-- Header -->
-            <div class="bg-gradient-to-r from-deep-forest to-sea-green px-8 py-6">
+            <div class="bg-gradient-to-r from-deep-forest to-sea-green px-4 sm:px-8 py-4 sm:py-6">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-10 sm:w-12 h-10 sm:h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 sm:w-7 h-6 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-white">Edit Personal Information</h1>
-                        <p class="text-white text-opacity-90 text-sm mt-1">Update your personal details and identity information</p>
+                        <h1 class="text-xl sm:text-2xl font-bold text-white">Edit Personal Information</h1>
+                        <p class="text-white text-opacity-90 text-sm mt-1 hidden sm:block">Update your personal details and identity information</p>
                     </div>
                 </div>
             </div>
 
-            <form method="POST" action="{{ route('citizen.profile.personal.update') }}" class="p-8">
+            <form method="POST" action="{{ route('citizen.profile.personal.update') }}" class="p-4 sm:p-8">
                 @csrf
                 @method('PUT')
 

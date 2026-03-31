@@ -137,6 +137,11 @@ class AuthController extends Controller
                 return redirect()->intended(route('admin.dashboard'));
             }
 
+            // If email is verified but PhilSys is not, go straight to PhilSys verification
+            if ($resident->hasVerifiedEmail() && !$resident->philsys_verified_at) {
+                return redirect()->route('verification.philsys');
+            }
+
             // Redirect to dashboard (or wherever they were trying to go)
             return redirect()->intended('dashboard');
         }
