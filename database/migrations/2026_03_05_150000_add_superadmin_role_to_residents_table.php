@@ -13,9 +13,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // For MySQL, we need to modify the enum by recreating it
-        if (DB::connection()->getDriverName() !== 'sqlite') {
+        $driver = DB::connection()->getDriverName();
+
+        if ($driver === 'mysql') {
             DB::statement("ALTER TABLE residents MODIFY COLUMN role ENUM('SA', 'admin', 'citizen', 'visitor') NOT NULL DEFAULT 'visitor'");
+            return;
+        }
+
+        if ($driver === 'pgsql') {
+            DB::statement("ALTER TABLE residents DROP CONSTRAINT IF EXISTS residents_role_check");
+            DB::statement("ALTER TABLE residents ADD CONSTRAINT residents_role_check CHECK (role IN ('SA', 'admin', 'citizen', 'visitor'))");
+            DB::statement("ALTER TABLE residents ALTER COLUMN role SET NOT NULL");
+            DB::statement("ALTER TABLE residents ALTER COLUMN role SET DEFAULT 'visitor'");
         }
     }
 
@@ -24,9 +33,18 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Remove SP role, revert to original enum
-        if (DB::connection()->getDriverName() !== 'sqlite') {
+        $driver = DB::connection()->getDriverName();
+
+        if ($driver === 'mysql') {
             DB::statement("ALTER TABLE residents MODIFY COLUMN role ENUM('admin', 'citizen', 'visitor') NOT NULL DEFAULT 'visitor'");
+            return;
+        }
+
+        if ($driver === 'pgsql') {
+            DB::statement("ALTER TABLE residents DROP CONSTRAINT IF EXISTS residents_role_check");
+            DB::statement("ALTER TABLE residents ADD CONSTRAINT residents_role_check CHECK (role IN ('admin', 'citizen', 'visitor'))");
+            DB::statement("ALTER TABLE residents ALTER COLUMN role SET NOT NULL");
+            DB::statement("ALTER TABLE residents ALTER COLUMN role SET DEFAULT 'visitor'");
         }
     }
 };
