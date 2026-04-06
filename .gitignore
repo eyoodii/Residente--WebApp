@@ -27,3 +27,5 @@ Thumbs.db
 frankenphp
 frankenphp-worker.php
 /public/deploy.php
+/public/vendor-patch.zip
+/bootstrap/cache/*.php
