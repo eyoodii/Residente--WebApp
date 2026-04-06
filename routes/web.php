@@ -408,14 +408,11 @@ Route::middleware(['auth', 'verified', 'lockout', 'onboarding.complete'])->group
             Route::put('/{chatbot}',                          [ChatbotAdminController::class, 'update'])->name('update');
             Route::delete('/{chatbot}',                       [ChatbotAdminController::class, 'destroy'])->name('destroy');
             Route::patch('/{chatbot}/toggle',                 [ChatbotAdminController::class, 'toggleActive'])->name('toggle');
-            // Unanswered queries / AI audit
             Route::get('/unanswered',                         [ChatbotAdminController::class, 'unanswered'])->name('unanswered');
             Route::patch('/unanswered/{query}/reviewed',      [ChatbotAdminController::class, 'markReviewed'])->name('mark-reviewed');
             Route::patch('/unanswered/bulk-reviewed',         [ChatbotAdminController::class, 'bulkMarkReviewed'])->name('bulk-reviewed');
-            // Handoff queue
             Route::get('/handoffs',                           [ChatbotAdminController::class, 'handoffs'])->name('handoffs');
             Route::patch('/handoffs/{handoff}',               [ChatbotAdminController::class, 'updateHandoff'])->name('update-handoff');
-            // API Keys
             Route::prefix('api-keys')->name('api-keys.')->group(function () {
                 Route::get('/',                                   [\App\Http\Controllers\Admin\ChatbotApiKeyController::class, 'index'])->name('index');
                 Route::post('/',                                  [\App\Http\Controllers\Admin\ChatbotApiKeyController::class, 'store'])->name('store');

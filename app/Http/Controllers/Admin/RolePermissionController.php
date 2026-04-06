@@ -37,13 +37,13 @@ class RolePermissionController extends Controller
 
     /** Office role groups for sidebar organisation. */
     private const DEPT_GROUPS = [
-        ['label' => 'Executive & Legislative', 'roles' => ['MAYOR', 'VMYOR']],
-        ['label' => 'Planning & Engineering',  'roles' => ['MPDC', 'ENGR', 'ASSOR']],
-        ['label' => 'Financial Management',    'roles' => ['TRESR', 'ACCT', 'BUDGT']],
-        ['label' => 'Social & Health',         'roles' => ['MSWDO', 'MHO', 'DRRMO']],
-        ['label' => 'Sector Services',         'roles' => ['AGRI', 'BPLO', 'REGST', 'SEPD', 'SBSEC', 'HRMO']],
-        ['label' => 'Sangguniang Bayan',       'roles' => ['SBFIN', 'SBHLT', 'SBWMN', 'SBRLS', 'SBPIC', 'SBTSP', 'SBPWK', 'SBAGR', 'SBBGA']],
-        ['label' => 'SK Federation',           'roles' => ['SKPRS']],
+        ['label' => 'Executive & Legislative', 'icon' => '🏛️', 'roles' => ['MAYOR', 'VMYOR']],
+        ['label' => 'Planning & Engineering',  'icon' => '📐', 'roles' => ['MPDC', 'ENGR', 'ASSOR']],
+        ['label' => 'Financial Management',    'icon' => '💰', 'roles' => ['TRESR', 'ACCT', 'BUDGT']],
+        ['label' => 'Social & Health',         'icon' => '🏥', 'roles' => ['MSWDO', 'MHO', 'DRRMO']],
+        ['label' => 'Sector Services',         'icon' => '🏢', 'roles' => ['AGRI', 'BPLO', 'REGST', 'SEPD', 'SBSEC', 'HRMO']],
+        ['label' => 'Sangguniang Bayan',       'icon' => '📜', 'roles' => ['SBFIN', 'SBHLT', 'SBWMN', 'SBRLS', 'SBPIC', 'SBTSP', 'SBPWK', 'SBAGR', 'SBBGA']],
+        ['label' => 'SK Federation',           'icon' => '🌟', 'roles' => ['SKPRS']],
     ];
 
     public function index()
