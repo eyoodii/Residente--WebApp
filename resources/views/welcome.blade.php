@@ -499,7 +499,7 @@
         <div class="absolute inset-y-0 left-0 w-1/2 bg-emerald-900 rounded-r-full opacity-20 blur-3xl pointer-events-none"></div>
 
         <!-- Content -->
-        <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8 relative z-10">
             <div class="text-center max-w-3xl mx-auto">
 
                 <!-- Location badge -->
