@@ -8,15 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('backup_logs', function (Blueprint $table) {
-            $table->string('file_hash', 64)->nullable()->after('file_size');
-        });
+        if (!Schema::hasColumn('backup_logs', 'file_hash')) {
+            Schema::table('backup_logs', function (Blueprint $table) {
+                $table->string('file_hash', 64)->nullable()->after('file_size');
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('backup_logs', function (Blueprint $table) {
-            $table->dropColumn('file_hash');
-        });
+        if (Schema::hasColumn('backup_logs', 'file_hash')) {
+            Schema::table('backup_logs', function (Blueprint $table) {
+                $table->dropColumn('file_hash');
+            });
+        }
     }
 };
